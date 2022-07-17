@@ -135,10 +135,10 @@ public class mDNSBrowser {
             @Override
             public void run() {
                 String serial = "";
-                String serviceStr = String.valueOf(service);
-                int index = serviceStr.indexOf("ASN");
+                String serviceStr = service.getServiceName();
+                int index = serviceStr.indexOf("migration-viz");
                 if (index > -1) {
-                    serial = serviceStr.substring(index, index + 10);
+                    serial = service.getHost().getHostAddress()+":"+service.getPort();
                 } else {
                     return;
                 }
