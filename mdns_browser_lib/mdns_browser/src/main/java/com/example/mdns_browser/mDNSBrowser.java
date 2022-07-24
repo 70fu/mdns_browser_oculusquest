@@ -1,7 +1,6 @@
 package com.example.mdns_browser;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -10,26 +9,19 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.pm.ServiceInfo;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
-import android.os.Bundle;
 import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class mDNSBrowser {
@@ -199,7 +191,7 @@ public class mDNSBrowser {
         Context mContext;
 
         NsdManager mNsdManager;
-        NsdManager.ResolveListener mResolveListener;
+        //NsdManager.ResolveListener mResolveListener;
         NsdManager.DiscoveryListener mDiscoveryListener;
         NsdManager.RegistrationListener mRegistrationListener;
 
@@ -253,7 +245,7 @@ public class mDNSBrowser {
         }
 
         public void initializeNsd() {
-            initializeResolveListener();
+            //instantiateResolveListener();
             initializeDiscoveryListener();
             initializeRegistrationListener();
 
@@ -270,7 +262,7 @@ public class mDNSBrowser {
                 @Override
                 public void onServiceFound(NsdServiceInfo service) {
                     if (service.getServiceType().contains("_http._tcp")) {
-                        mNsdManager.resolveService(service, mResolveListener);
+                        mNsdManager.resolveService(service, instantiateResolveListener());
                         Log.e(TAG, "service info :: " + service + "..");
                         mService = service;
                     }
@@ -306,8 +298,8 @@ public class mDNSBrowser {
             };
         }
 
-        public void initializeResolveListener() {
-            mResolveListener = new NsdManager.ResolveListener() {
+        public NsdManager.ResolveListener instantiateResolveListener() {
+            return new NsdManager.ResolveListener() {
 
                 @Override
                 public void onResolveFailed(NsdServiceInfo serviceInfo,
